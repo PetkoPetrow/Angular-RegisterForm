@@ -1,0 +1,223 @@
+<div class="art" style="text-align: center">
+  <h1>{{ title }}</h1>
+  <!-- Registration Form -->
+  <form [formGroup]="angForm" novalidate (ngSubmit)="onSubmit()">
+    <!-- First Name [textfield, required] -->
+    <div class="form-group">
+      <label class="center-block"
+        >First Name:
+        <input
+          placeholder="Enter First Name..."
+          class="form-control"
+          formControlName="firstName"
+        />
+      </label>
+    </div>
+    <div
+      *ngIf="
+        angForm.controls['firstName'].invalid &&
+        (angForm.controls['firstName'].dirty ||
+          angForm.controls['firstName'].touched)
+      "
+      class="alert alert-danger"
+    >
+      <div *ngIf="angForm.controls['firstName'].errors?.['required']">
+        First Name is required.
+      </div>
+    </div>
+    <!-- Last Name [textfield, required] -->
+    <div class="form-group">
+      <label class="center-block"
+        >Last Name:
+        <input
+          placeholder="Enter Last Name..."
+          class="form-control"
+          formControlName="lastName"
+        />
+      </label>
+    </div>
+    <div
+      *ngIf="
+        angForm.controls['lastName'].invalid &&
+        (angForm.controls['lastName'].dirty ||
+          angForm.controls['lastName'].touched)
+      "
+      class="alert alert-danger"
+    >
+      <div *ngIf="angForm.controls['lastName'].errors?.['required']">
+        Last Name is required.
+      </div>
+    </div>
+    <!-- country - [required, drop-down selection, pre-populated] -->
+    <div class="form-group">
+      <label class="center-block"
+        >Country:
+        <select formControlName="country">
+          <option [value]="country" *ngFor="let country of countries">
+            {{ country }}
+          </option>
+        </select>
+      </label>
+    </div>
+    <!-- gender - [required, radio buttons] -->
+    <div class="form-group">
+      <div class="custom-control custom-radio">
+        Gender:
+        <input type="radio" value="Male" formControlName="gender" /> Male
+        <input type="radio" value="Female" formControlName="gender" /> Female
+      </div>
+    </div>
+    <!-- email - [required, valid email] -->
+    <div class="form-group">
+      <label class="center-block"
+        >Email:
+        <input
+          placeholder="Enter Email..."
+          class="form-control"
+          formControlName="email"
+        />
+      </label>
+    </div>
+    <div
+      *ngIf="
+        angForm.controls['email'].invalid &&
+        (angForm.controls['email'].dirty || angForm.controls['email'].touched)
+      "
+      class="alert alert-danger"
+    >
+      <div *ngIf="angForm.controls['email'].errors?.['required']">
+        Email is required.
+      </div>
+      <div *ngIf="angForm.controls['email'].errors?.['pattern']">
+        Email pattern incorrect.
+      </div>
+    </div>
+    <!-- username - [text field, required, min 3 char, only numbers and alphabetical] -->
+    <div class="form-group">
+      <label class="center-block"
+        >Username:
+        <input
+          placeholder="Enter username..."
+          class="form-control"
+          formControlName="username"
+        />
+      </label>
+    </div>
+    <div
+      *ngIf="
+        angForm.controls['username'].invalid &&
+        (angForm.controls['username'].dirty ||
+          angForm.controls['username'].touched)
+      "
+      class="alert alert-danger"
+    >
+      <div *ngIf="angForm.controls['username'].errors?.['required']">
+        Username is required.
+      </div>
+      <div *ngIf="angForm.controls['username'].errors?.['pattern']">
+        Username pattern incorrect.
+      </div>
+      <div *ngIf="angForm.controls['username'].errors?.['minlength']">
+        Username input length minimum
+        {{ angForm.controls["username"].errors?.['minlength'].requiredLength }}.
+      </div>
+    </div>
+    <!-- password -[required ,text field, min 8 char, numbs + alphabetical + atleast one special character] -->
+    <div class="form-group">
+      <label class="center-block"
+        >Password:
+        <input
+          placeholder="Enter Password..."
+          class="form-control"
+          formControlName="password"
+          type="password"
+        />
+      </label>
+    </div>
+    <div
+      *ngIf="
+        angForm.controls['password'].invalid &&
+        (angForm.controls['password'].dirty ||
+          angForm.controls['password'].touched)
+      "
+      class="alert alert-danger"
+    >
+      <div *ngIf="angForm.controls['password'].errors?.['required']">
+        Password is required.
+      </div>
+      <div *ngIf="angForm.controls['password'].errors?.['pattern']">
+        Password pattern incorrect.
+      </div>
+      <div *ngIf="angForm.controls['password'].errors?.['minlength']">
+        Password input length minimum
+        {{ angForm.controls["password"].errors?.['minlength'].requiredLength }}.
+      </div>
+    </div>
+    <!-- password - [required , matching with 1st] -->
+    <div class="form-group">
+      <label class="center-block"
+        >Confirm Password:
+        <input
+          placeholder="Confirm Password..."
+          class="form-control"
+          formControlName="confirmPassword"
+          type="password"
+        />
+      </label>
+    </div>
+    <div
+      *ngIf="
+        angForm.controls['confirmPassword'].invalid &&
+        (angForm.controls['confirmPassword'].dirty ||
+          angForm.controls['confirmPassword'].touched)
+      "
+      class="alert alert-danger"
+    >
+      <div *ngIf="angForm.controls['confirmPassword'].errors?.['required']">
+        Password is required.
+      </div>
+      <div *ngIf="angForm.controls['confirmPassword'].errors?.['mustMatch']">
+        Passwords must match
+      </div>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-primary" (click)="open(mymodal)">
+        Register now
+      </button>
+    </div>
+  </form>
+
+  <!-- Register data window -->
+  <ng-template #mymodal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Register JSON modal</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">x</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h4>First name: {{ angForm.value.firstName | json }}</h4>
+      <h4>Last name: {{ angForm.value.lastName | json }}</h4>
+      <h4>Country: {{ angForm.value.country | json }}</h4>
+      <h4>Gender: {{ angForm.value.gender | json }}</h4>
+      <h4>Email: {{ angForm.value.email | json }}</h4>
+      <h4>Username: {{ angForm.value.username | json }}</h4>
+      <h4>Password: {{ angForm.value.password | json }}</h4>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="modal.close('Save click')"
+        (click)="modal.close('Save click')"
+      >
+        Close
+      </button>
+    </div>
+  </ng-template>
+</div>
